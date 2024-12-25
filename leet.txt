@@ -1,0 +1,119 @@
+4.class Solution {
+    private int p1 = 0, p2 = 0;
+
+    // Get the smaller value between nums1[p1] and nums2[p2] and move the pointer forwards.
+
+    private int getMin(int[] nums1, int[] nums2) {
+        if (p1 < nums1.length && p2 < nums2.length) {
+            return nums1[p1] < nums2[p2] ? nums1[p1++] : nums2[p2++];
+        } else if (p1 < nums1.length) {
+            return nums1[p1++];
+        } else if (p2 < nums2.length) {
+            return nums2[p2++];
+        }
+        return -1;
+    }
+
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int m = nums1.length, n = nums2.length;
+        if ((m + n) % 2 == 0) {
+            for (int i = 0; i < (m + n) / 2 - 1; ++i) {
+                int tmp = getMin(nums1, nums2);
+            }
+            return (double) (getMin(nums1, nums2) + getMin(nums1, nums2)) / 2;
+        } else {
+            for (int i = 0; i < (m + n) / 2; ++i) {
+                int tmp = getMin(nums1, nums2);
+            }
+            return getMin(nums1, nums2);
+        }
+    }
+}
+
+
+5.class Solution {
+    public String longestPalindrome(String s) {
+        int n = s.length();
+        boolean[][] dp = new boolean[n][n];
+        int[] ans = new int[] { 0, 0 };
+
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = true;
+        }
+
+        for (int i = 0; i < n - 1; i++) {
+            if (s.charAt(i) == s.charAt(i + 1)) {
+                dp[i][i + 1] = true;
+                ans[0] = i;
+                ans[1] = i + 1;
+            }
+        }
+
+        for (int diff = 2; diff < n; diff++) {
+            for (int i = 0; i < n - diff; i++) {
+                int j = i + diff;
+                if (s.charAt(i) == s.charAt(j) && dp[i + 1][j - 1]) {
+                    dp[i][j] = true;
+                    ans[0] = i;
+                    ans[1] = j;
+                }
+            }
+        }
+
+        int i = ans[0];
+        int j = ans[1];
+        return s.substring(i, j + 1);
+    }
+}
+ 
+
+
+
+7.class Solution {
+    public int reverse(int x) {
+        int rev = 0;
+        while (x != 0) {
+            int pop = x % 10;
+            x /= 10;
+            if (
+                rev > Integer.MAX_VALUE / 10 ||
+                (rev == Integer.MAX_VALUE / 10 && pop > 7)
+            ) return 0;
+            if (
+                rev < Integer.MIN_VALUE / 10 ||
+                (rev == Integer.MIN_VALUE / 10 && pop < -8)
+            ) return 0;
+            rev = rev * 10 + pop;
+        }
+        return rev;
+    }
+}
+
+
+
+
+9.class Solution {
+    public boolean isMatch(String text, String pattern) {
+        if (pattern.isEmpty()) return text.isEmpty();
+        boolean first_match =
+            (!text.isEmpty() &&
+                (pattern.charAt(0) == text.charAt(0) ||
+                    pattern.charAt(0) == '.'));
+
+        if (pattern.length() >= 2 && pattern.charAt(1) == '*') {
+            return (
+                isMatch(text, pattern.substring(2)) ||
+                (first_match && isMatch(text.substring(1), pattern))
+            );
+        } else {
+            return (
+                first_match && isMatch(text.substring(1), pattern.substring(1))
+            );
+        }
+    }
+}
+
+
+
+
+
